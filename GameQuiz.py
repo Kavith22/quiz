@@ -1,6 +1,9 @@
 import pgzrun
+import time
+
 HEIGHT=500
 WIDTH=500
+
 questionrectangle=Rect(0,60,400,60)
 answerrectangle1=Rect(30,160,150,80)
 answerrectangle2=Rect(190,160,150,80)
@@ -8,9 +11,18 @@ answerrectangle3=Rect(30,250,150,80)
 answerrectangle4=Rect(190,250,150,80)
 timerrectangle=Rect(400,60,100,60)
 skiprectangle=Rect(350,160,140,170)
-boxes=[answerrectangle1,answerrectangle2,answerrectangle3,answerrectangle4]
+score = 0
 
+timer=10
+def timedown():
+    global timer
+    if timer>0:
+        timer=timer-1
+
+Wrongy=False
+boxes=[answerrectangle1,answerrectangle2,answerrectangle3,answerrectangle4]
 questions=[]
+
 def read_ans():
     global questions
     text = open('Quiz\Text.txt')
@@ -23,9 +35,27 @@ def nextqu():
     return fq
 
 def correct():
+    global Wrongy
+    global timer
     global nextq
-    nextq=nextqu()
-
+    global score
+    score = score+1
+    if questions:
+        nextq=nextqu()
+    else:
+        nextq=['Congrats you got: '+str(score)+'/5' ,'-','-','-','-',0]
+        timer=0
+    
+    Wrongy=False
+def wrong():
+    global Wrongy
+    global timer
+    Wrongy=True
+    global nextq
+    nextq=['Game Over you got: '+str(score)+'/5' ,'-','-','-','-',0]
+    timer = 0
+    print(nextq)
+    
 def on_mouse_down(pos):
     boxnum=1
     for box in boxes:
@@ -35,6 +65,7 @@ def on_mouse_down(pos):
                 correct()
             else:
                 print('wrong')
+                wrong()
         boxnum=boxnum+1
 
 def draw():
@@ -48,6 +79,9 @@ def draw():
     screen.draw.textbox(nextq[2], answerrectangle2)
     screen.draw.textbox(nextq[3], answerrectangle3)
     screen.draw.textbox(nextq[4], answerrectangle4)
+    screen.draw.textbox(str(timer),timerrectangle)
+           
 read_ans()
 nextq=nextqu()
+clock.schedule_interval(timedown,1)
 pgzrun.go()
