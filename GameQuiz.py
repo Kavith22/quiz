@@ -3,7 +3,7 @@ import time
 
 HEIGHT=500
 WIDTH=500
-
+questionrectangle=Rect(0,60,400,60)
 questionrectangle=Rect(0,60,400,60)
 answerrectangle1=Rect(30,160,150,80)
 answerrectangle2=Rect(190,160,150,80)
@@ -13,7 +13,7 @@ timerrectangle=Rect(400,60,100,60)
 skiprectangle=Rect(350,160,140,170)
 score = 0
 
-timer=10
+timer=20
 def timedown():
     global timer
     if timer>0:
@@ -47,6 +47,8 @@ def correct():
         timer=0
     
     Wrongy=False
+
+    
 def wrong():
     global Wrongy
     global timer
@@ -57,6 +59,8 @@ def wrong():
     print(nextq)
     
 def on_mouse_down(pos):
+    global nextq
+    global timer
     boxnum=1
     for box in boxes:
         if box.collidepoint(pos):
@@ -67,6 +71,12 @@ def on_mouse_down(pos):
                 print('wrong')
                 wrong()
         boxnum=boxnum+1
+    if questions:
+        if skiprectangle.collidepoint(pos):
+            nextq=nextqu()
+    else:
+        nextq=['Game Over you got: '+str(score)+'/5' ,'-','-','-','-',0]
+        timer = 0
 
 def draw():
     screen.draw.filled_rect(questionrectangle,(0,0,190))
@@ -80,6 +90,7 @@ def draw():
     screen.draw.textbox(nextq[3], answerrectangle3)
     screen.draw.textbox(nextq[4], answerrectangle4)
     screen.draw.textbox(str(timer),timerrectangle)
+    screen.draw.textbox('skip',skiprectangle,angle=0)
            
 read_ans()
 nextq=nextqu()
