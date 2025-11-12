@@ -1,5 +1,5 @@
 What is 1+1?|2|4|5|6|1
 What is the darkest colour|black|white|grey|red|1
 What is 99+20?|119|129|109|79|1
-What is 9-4?|2|4|5|6|3
+What is 9-4?|2|4|5|6|2
 What is 1012-1?|1002|1011|1005|1006|2
